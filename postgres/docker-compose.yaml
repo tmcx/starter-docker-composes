@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - ./backup:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+
+  pgadmin4:
+    image: dpage/pgadmin4:4.24
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+      - PGADMIN_DEFAULT_EMAIL=postgres
+    ports:
+      - 8080:80
+
+networks:
+  databases:
+    name: databases
