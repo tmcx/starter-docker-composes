@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  db:
+  postgres:
     image: postgres:13-alpine
     restart: always
     environment:
@@ -12,6 +12,8 @@ services:
       - ./backup:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
+    networks:
+      - databases
 
   pgadmin4:
     image: dpage/pgadmin4:4.24
@@ -23,6 +25,8 @@ services:
       - PGADMIN_DEFAULT_EMAIL=postgres
     ports:
       - 8080:80
+    networks:
+      - databases
 
 networks:
   databases:
